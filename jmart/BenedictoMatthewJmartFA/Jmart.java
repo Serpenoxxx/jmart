@@ -12,15 +12,15 @@ public class Jmart
     public static void main(String[] args){
     }
     
-    public int getPromo(){
+    public static int getPromo(){
         return 0;
     }
     
-    public String getCustomer(){
+    public static String getCustomer(){
         return "OOP";
     }
     
-    public float getDiscountPercentage(int before, int after){
+    public static float getDiscountPercentage(int before, int after){
         float discountPercentage = 0;
         if (before < after){
             return discountPercentage;
@@ -29,7 +29,7 @@ public class Jmart
         return discountPercentage = 100 * (before - after) / before;
     }
     
-    public int getDiscountedPrice(int price, float discountPercentage){
+    public static int getDiscountedPrice(int price, float discountPercentage){
         int discountedPrice = 0;
         if (discountPercentage > 100.0f){
             return discountedPrice;
@@ -38,21 +38,21 @@ public class Jmart
         return discountedPrice = price * (100 - discountPercentage) / 100;
     }
     
-    public int getOriginalPrice(int discountedPrice,float discountPercentage){
+    public static int getOriginalPrice(int discountedPrice,float discountPercentage){
         int originalPrice = 0;
         return originalPrice = discountedPrice / (1 - discountPercentage / 100);
     }
     
-    public float getCommisionMultiplier(){
+    public static float getCommisionMultiplier(){
         return 0.05f;
     }
     
-    public int getAdjustedPrice(int price){
+    public static int getAdjustedPrice(int price){
         int adjustedPrice = 0;
         return adjustedPrice = price * (105 / 100);
     }
     
-    public int getAdminFee(int price){
+    public static int getAdminFee(int price){
         int adminFee = 0;
         int adjustedPrice = 0;
         adjustedPrice = price * (105 / 100);
