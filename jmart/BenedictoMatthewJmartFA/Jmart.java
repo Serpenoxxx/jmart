@@ -25,8 +25,10 @@ public class Jmart
         if (before < after){
             return discountPercentage;
         }
-        
-        return discountPercentage = 100 * (before - after) / before;
+        else{
+            discountPercentage = 100 * (before - after) / before;
+        }
+        return discountPercentage;
     }
     
     public static int getDiscountedPrice(int price, float discountPercentage){
@@ -34,8 +36,10 @@ public class Jmart
         if (discountPercentage > 100.0f){
             return discountedPrice;
         }
-        
-        return discountedPrice = price * (100 - discountPercentage) / 100;
+        else{
+            discountedPrice = price * (100 - discountPercentage) / 100;
+        }
+        return discountedPrice;
     }
     
     public static int getOriginalPrice(int discountedPrice,float discountPercentage){
