@@ -10,7 +10,7 @@ package BenedictoMatthewJmartFA;
 public class Jmart
 {
     public static void main(String[] args){
-
+    System.out.println();
     }
     
     public static int getPromo(){
@@ -38,7 +38,7 @@ public class Jmart
             return discountedPrice;
         }
         else{
-            discountedPrice =  price * (100 - (int)discountPercentage) / 100;
+            discountedPrice =  price * (int)(100 - discountPercentage) / 100;
         }
         return discountedPrice;
     }
@@ -53,15 +53,10 @@ public class Jmart
     }
     
     public static int getAdjustedPrice(int price){
-        int adjustedPrice;
-        return adjustedPrice = price * (105 / 100);
+        return (int)((price * getCommisionMultiplier()) + price);
     }
     
     public static int getAdminFee(int price){
-        int adminFee = 0;
-        int adjustedPrice = 0;
-        adjustedPrice = price * (105 / 100);
-        adminFee = adjustedPrice - price;
-        return adminFee;
+        return (int) (price * getCommisionMultiplier());
     }
 }
