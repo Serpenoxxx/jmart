@@ -15,4 +15,7 @@ public class Jmart
     public static Product create(){
         return new Product("Ps5", 10, false, new PriceTag(10000, 10.0), ProductCategory.GAMING); 
     }
+    
+    //public static Coupon createCoupon(){
+    //}
 }
