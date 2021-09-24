@@ -9,13 +9,21 @@ package BenedictoMatthewJmartFA;
  */
 public class Jmart
 {
-    public static void main(String[] args){
+    // instance variables - replace the example below with your own
+    public static void main(String[] args) {
+        ShipmentDuration sd = createShipmentDuration();
+        System.out.println(sd.isDuration(ShipmentDuration.KARGO));
     }
     
-    public static Product create(){
-        return new Product("Ps5", 10, false, new PriceTag(10000, 10.0), ProductCategory.GAMING); 
-    }
-    
-    //public static Coupon createCoupon(){
+    //public static Product createProduct() {
+       // PriceTag pt = new PriceTag(100000, 10);
+       // return new Product("Piring Cantik", 5, false, pt, ProductCategory.KITCHEN);
     //}
-}
+    
+    public static Coupon createCoupon() {
+        return new Coupon("Pusp", 78, Type.REBATE, 200000, 10000);
+    }
+    
+    public static ShipmentDuration createShipmentDuration() {
+        return new ShipmentDuration(ShipmentDuration.KARGO);
+    }  }

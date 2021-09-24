@@ -11,6 +11,7 @@ public class PriceTag
     
     public PriceTag (double price){
          this.price = price;
+         this.discount = 0.0;
     }
     
     public PriceTag (double price, double discount){
@@ -29,14 +30,17 @@ public class PriceTag
             return BOTTOM_FEE;
         }
         
-        return hargaDiskon - (hargaDiskon * (COMMISSION_MULTIPLIER / 100));
+        return (hargaDiskon * COMMISSION_MULTIPLIER);
     }
     
     private double getDiscountedPrice(){
-        if (this.discount >= 100){
+        double discount = this.discount;
+        if (this.discount > 100.0) {
             return 0.0;
+        } else if (this.discount == 100.0) {
+            return this.price;
         }
         
-        return this.price - (this.price * (this.discount / 100));
+        return this.price - (this.price * (discount/100));
     }
 }
