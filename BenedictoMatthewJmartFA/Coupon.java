@@ -1,6 +1,6 @@
 package BenedictoMatthewJmartFA;
 
-public class Coupon
+public class Coupon extends Recognizable
 {
     public final String name;
     public final int code;
@@ -9,7 +9,8 @@ public class Coupon
     public final double minimum;
     private  boolean used;
     
-    Coupon(String name, int code, Type type, double cut, double minimum){
+    public Coupon(int id, String name, int code, Type type, double cut, double minimum){
+        super(id);
         this.name = name;
         this.code = code;
         this.type = type;
@@ -18,7 +19,7 @@ public class Coupon
         this.used = false;
     }
     
-    boolean isUsed(){
+    public boolean isUsed(){
         return this.used;
     }
     
@@ -36,5 +37,9 @@ public class Coupon
                 return (priceTag.getAdjustedPrice() * cut/100);
         } 
          return (priceTag.getAdjustedPrice() - this.cut);
+    }
+    
+        public boolean read(String content){
+    return false;
     }
 }
