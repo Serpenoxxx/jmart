@@ -1,9 +1,11 @@
 #BlueJ class context
 comment0.target=Payment
-comment1.params=
-comment1.target=Payment()
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Payment\r\n
-comment2.params=y
-comment2.target=int\ sampleMethod(int)
-comment2.text=\r\n\ An\ example\ of\ a\ method\ -\ replace\ this\ comment\ with\ your\ own\r\n\r\n\ @param\ \ y\ \ a\ sample\ parameter\ for\ a\ method\r\n\ @return\ \ \ \ the\ sum\ of\ x\ and\ y\r\n
-numComments=3
+comment1.params=id\ buyerId\ productId\ productCount\ shipment
+comment1.target=Payment(int,\ int,\ int,\ int,\ Shipment)
+comment2.params=
+comment2.target=double\ getTotalPay()
+comment3.params=
+comment3.target=boolean\ validate()
+comment4.params=
+comment4.target=Invoice\ perform()
+numComments=5

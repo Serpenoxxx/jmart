@@ -1,25 +1,19 @@
 package BenedictoMatthewJmartFA;
 
-
-public class Payment extends Transaction implements FileParser
+public class Payment extends Invoice implements Transactor 
 {
-    public int productId;
-    public ShipmentDuration sd;
+    public int productCount;
+    public Shipment shipment;
     
-    public Payment(int id, int buyerId, Product product, ShipmentDuration shipmentDuraion){
-        super(id, buyerId, product.id);
-        //this.sd = shipmentDuration;
+    Payment(int id, int buyerId, int productId, int productCount, Shipment shipment){
+        super(id, buyerId, productId);
+        this.productCount = productCount;
+        this.shipment = shipment;
+        
     }
     
-    public Payment(int id, int buyerId, int storeId, int productId, ShipmentDuration shipmentDuration){
-        super(id, buyerId, storeId);
-        this.productId = productId;
-        this.sd = shipmentDuration;
-    }
-    
-    @Override
-    public boolean read(String content){
-        return false;
+    public double getTotalPay(){
+        return 0;
     }
     
     @Override
@@ -28,7 +22,9 @@ public class Payment extends Transaction implements FileParser
     }
     
     @Override
-    public Transaction perform(){
+    public Invoice perform(){
         return null;
     }
+
+    
 }

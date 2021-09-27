@@ -1,7 +1,9 @@
 #BlueJ class context
 comment0.target=Product
-comment1.params=id\ storeId\ name\ weight\ conditionUsed\ pricetag\ category
-comment1.target=Product(int,\ int,\ java.lang.String,\ int,\ boolean,\ PriceTag,\ ProductCategory)
-comment2.params=id\ store\ name\ weight\ conditionUsed\ pricetag\ category
-comment2.target=Product(int,\ Store,\ java.lang.String,\ int,\ boolean,\ PriceTag,\ ProductCategory)
-numComments=3
+comment1.params=id\ storeId\ name\ weight\ conditionUsed\ pricetag\ category\ multiDuration
+comment1.target=Product(int,\ int,\ java.lang.String,\ int,\ boolean,\ PriceTag,\ ProductCategory,\ Shipment.MultiDuration)
+comment2.params=content
+comment2.target=boolean\ read(java.lang.String)
+comment3.params=
+comment3.target=java.lang.String\ toString()
+numComments=4
