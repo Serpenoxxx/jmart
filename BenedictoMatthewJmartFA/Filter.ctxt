@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Filter
+comment1.params=list\ value\ less
+comment1.target=java.util.ArrayList\ filterPriceTag(PriceTag[],\ double,\ boolean)
+comment2.params=list\ value\ less
+comment2.target=void\ filterProductRating(java.util.ArrayList,\ double,\ boolean)
+numComments=3

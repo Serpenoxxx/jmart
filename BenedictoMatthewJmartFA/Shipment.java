@@ -1,5 +1,8 @@
 package BenedictoMatthewJmartFA;
 import java.util.EnumSet;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Shipment implements FileParser {
     public String address;
@@ -25,17 +28,17 @@ public class Shipment implements FileParser {
         public MultiDuration(Duration... args) {
         
             for (Duration md : args) {
-                this.bit = (byte) (this.bit | md.bit);    
-            }
-        }
+                 this.bit = (byte) (this.bit | md.bit);    
+             }
+         }
         
         public boolean isDuration(Duration duration) {
             if ((this.bit & (1 << (duration.bit - 1))) >= 0) {
-                return true;
-            }
+                 return true;
+           }
             return false;
+         }
         }
-    }
 
     static class Duration {      
         public static final Duration INSTANT = new Duration((byte)00000001);
@@ -43,12 +46,31 @@ public class Shipment implements FileParser {
         public static final Duration NEXT_DAY = new Duration((byte)00000100);
         public static final Duration REGULER = new Duration((byte)00001000);
         public static final Duration KARGO = new Duration((byte)00010000);
+        public static final SimpleDateFormat ESTIMATION_FORMAT = new SimpleDateFormat("EEE MMM dd yyyy");
         
         public byte bit;
     
-        private Duration(byte bit)
-        {
+        private Duration(byte bit){
             this.bit = bit;
+            }
+        
+    
+    public String getEstimatedArrival(Date reference){
+        Calendar cal = Calendar.getInstance();
+        String format = ESTIMATION_FORMAT.format(cal.getTime());
+        if(this.bit == (byte)00000001 || this.bit == (byte)00000010){
+            return format;
+        } else if (this.bit == (byte)000001000){
+            cal.add(Calendar.DATE, 1);
+            return format;
+        } else if (this.bit == (byte)000010000){
+            cal.add(Calendar.DATE, 2);
+            return format;
+        } else if (this.bit == (byte)000100000){
+            cal.add(Calendar.DATE, 5);
+            return format;
+        }
+        return format;
         }
     }
 }

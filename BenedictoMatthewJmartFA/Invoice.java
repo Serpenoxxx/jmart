@@ -1,9 +1,9 @@
 package BenedictoMatthewJmartFA;
-
+import java.util.Date;
 
 public abstract class Invoice extends Recognizable implements FileParser
 {
-    public String date;
+    public Date date = new Date();
     public int buyerId;
     public int complaintId;
     public int productId;
@@ -20,11 +20,12 @@ public abstract class Invoice extends Recognizable implements FileParser
     
     protected Invoice(int id, int buyerId, int productId){
         super(id);
-        this.rating = Rating.NONE;
-        this.date = "Jan";  
+        this.rating = Rating.NONE; 
+        this.date = new java.util.Date();
         this.status = Status. WAITING_CONFIRMATION;
         this.buyerId = buyerId;
         this.productId = productId;
+        
     }
     
     public abstract double getTotalPay();
