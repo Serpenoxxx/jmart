@@ -47,6 +47,7 @@ public class Shipment implements FileParser {
         public static final Duration REGULER = new Duration((byte)00001000);
         public static final Duration KARGO = new Duration((byte)00010000);
         public static final SimpleDateFormat ESTIMATION_FORMAT = new SimpleDateFormat("EEE MMM dd yyyy");
+        Calendar cal = Calendar.getInstance();
         
         public byte bit;
     
@@ -66,11 +67,10 @@ public class Shipment implements FileParser {
         } else if (this.bit == (byte)000010000){
             cal.add(Calendar.DATE, 2);
             return format;
-        } else if (this.bit == (byte)000100000){
+        } else {
             cal.add(Calendar.DATE, 5);
             return format;
         }
-        return format;
         }
     }
 }

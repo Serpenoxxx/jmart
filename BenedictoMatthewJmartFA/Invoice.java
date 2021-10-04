@@ -1,31 +1,26 @@
 package BenedictoMatthewJmartFA;
+
 import java.util.Date;
+import java.util.ArrayList;
 
 public abstract class Invoice extends Recognizable implements FileParser
 {
-    public Date date = new Date();
+    enum Status { WAITING_CONFIRMATION, CANCELLED, ON_PROGRESS, ON_DELIVERY, COMPLAINT, FINISHED, FAILED };
+    enum Rating { NONE, BAD, NEUTRAL, GOOD };
+    
+    public Date date;
     public int buyerId;
-    public int complaintId;
     public int productId;
-    public Rating rating;
-    public Status status;
+    public int complaintId;
+    public Rating rating = Rating.NONE;
+    public Status status = Status.WAITING_CONFIRMATION;
+    public ArrayList<Record> history = new ArrayList<>();
     
-    enum Status{
-        WAITING_CONFIRMATION, CANCELLED, ON_PROGRESS, ON_DELIVERY, COMPLAINT, FINISHED, FAILED
-    }
-    
-    enum Rating{
-        NONE, BAD, NEUTRAL, GOOD
-    }
-    
-    protected Invoice(int id, int buyerId, int productId){
+    protected Invoice(int id, int buyerId, int productId) {
         super(id);
-        this.rating = Rating.NONE; 
-        this.date = new java.util.Date();
-        this.status = Status. WAITING_CONFIRMATION;
         this.buyerId = buyerId;
         this.productId = productId;
-        
+        this.date = new Date(); 
     }
     
     public abstract double getTotalPay();
@@ -34,5 +29,10 @@ public abstract class Invoice extends Recognizable implements FileParser
     public boolean read(String content) {
         return false;
     }
-         
+    
+    class Record {
+        public Status status;
+        public Date date;
+        public String message;
+    }
 }
