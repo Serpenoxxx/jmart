@@ -1,6 +1,6 @@
 package BenedictoMatthewJmartFA;
 
-public class Coupon extends Recognizable
+public class Coupon
 {
     public final String name;
     public final int code;
@@ -9,8 +9,7 @@ public class Coupon extends Recognizable
     public final double minimum;
     private  boolean used;
     
-    public Coupon(int id, String name, int code, Type type, double cut, double minimum){
-        super(id);
+    public Coupon(String name, int code, Type type, double cut, double minimum){
         this.name = name;
         this.code = code;
         this.type = type;

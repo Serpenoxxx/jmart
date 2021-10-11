@@ -1,8 +1,9 @@
 package BenedictoMatthewJmartFA;
 
 
-public class Product extends Recognizable implements FileParser
+public class Product
 {
+    public int accountId;
     public String name;
     public int weight;
     public boolean conditionUsed;
@@ -10,11 +11,11 @@ public class Product extends Recognizable implements FileParser
     public ProductCategory category;
     public ProductRating rating;
     public int storeId;
-    public Shipment.MultiDuration multiDuration;
+    public byte shipmentPlans;
 
-    public Product(int id, int storeId, String name, int weight, boolean conditionUsed, PriceTag pricetag, ProductCategory category, Shipment.MultiDuration multiDuration)
+    public Product(int accountId, int storeId, String name, int weight, boolean conditionUsed, PriceTag pricetag, ProductCategory category, byte shipmentPlans)
     {
-        super(id);
+        this.accountId = accountId;
         this.name = name;
         this.weight = weight;
         this.conditionUsed = conditionUsed;
@@ -22,10 +23,9 @@ public class Product extends Recognizable implements FileParser
         this.category = category;
         this.rating = new ProductRating();
         this.storeId = storeId;
-        this.multiDuration = multiDuration;
+        this.shipmentPlans = shipmentPlans;
     }
-    
-    @Override
+
     public boolean read(String content) {
         return false;
     }

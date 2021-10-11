@@ -3,23 +3,24 @@ package BenedictoMatthewJmartFA;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Account extends Recognizable implements FileParser
+public class Account extends Recognizable
 {
    public String name;
    public String email;
    public String password;
+   public double balance;
+   public Store store;
    public static final String REGEX_EMAIL = "^[a-zA-Z0-9_&_*~]+(?:\\.[a-zA-Z0-9_&_*~]+)*@[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9-]+)*$";
    public static final String REGEX_PASSWORD = "^(?=.*\\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$";
    
-   public Account(int id, String name, String email, String password)
+   public Account(String name, String email, String password, double balance)
    {
-       super(id);
        this.name = name;
        this.email = email;
        this.password = password;
    }
    
-   @Override
+
    public boolean read(String content)
    {
        return false;

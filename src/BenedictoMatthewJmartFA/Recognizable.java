@@ -3,8 +3,8 @@ package BenedictoMatthewJmartFA;
 public class Recognizable implements Comparable<Recognizable> {
     public final int id;
 
-    public Recognizable(int id) {
-        this.id = id;
+    protected Recognizable() {
+        this.id = 1;
     }
 
     public boolean equals(Object a) {
