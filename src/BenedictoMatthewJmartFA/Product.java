@@ -7,13 +7,13 @@ public class Product
     public String name;
     public int weight;
     public boolean conditionUsed;
-    public PriceTag pricetag;
+    public Treasury pricetag;
     public ProductCategory category;
     public ProductRating rating;
     public int storeId;
     public byte shipmentPlans;
 
-    public Product(int accountId, int storeId, String name, int weight, boolean conditionUsed, PriceTag pricetag, ProductCategory category, byte shipmentPlans)
+    public Product(int accountId, int storeId, String name, int weight, boolean conditionUsed, Treasury pricetag, ProductCategory category, byte shipmentPlans)
     {
         this.accountId = accountId;
         this.name = name;
@@ -31,6 +31,6 @@ public class Product
     }
     
     public String toString() {
-        return "Name: " + this.name + "\n" + "Weight: " + this.weight + "\n" + "conditionUsed: " + this.conditionUsed + "\n" + "priceTag: " + this.pricetag.getAdjustedPrice() + "\n" + "category: " + this.category + "\n" + "";
+        return "Name: " + this.name + "\n" + "Weight: " + this.weight + "\n" + "conditionUsed: " + this.conditionUsed + "\n" + "priceTag: " + this.pricetag.getAdjustedPrice(100000, 10) + "\n" + "category: " + this.category + "\n" + "";
     }
 }

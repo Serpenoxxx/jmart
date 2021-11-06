@@ -22,20 +22,20 @@ public class Coupon
         return this.used;
     }
     
-    public boolean canApply(PriceTag priceTag){
-        if((priceTag.getAdjustedPrice() >= this.minimum) && (used == false)){
+    public boolean canApply(double price, double discount){
+        if((Treasury.getAdjustedPrice(100000, 10) >= this.minimum) && (used == false)){
             return true;
         } else{
             return false;
         }
     }
     
-    public double apply(PriceTag priceTag){
+    public double apply(double price, double discount){
          this.used = true;
         if(this.type == type.DISCOUNT){
-                return (priceTag.getAdjustedPrice() * cut/100);
+                return (Treasury.getAdjustedPrice(100000, 10) * cut/100);
         } 
-         return (priceTag.getAdjustedPrice() - this.cut);
+         return (Treasury.getAdjustedPrice(100000, 10) - this.cut);
     }
     
         public boolean read(String content){

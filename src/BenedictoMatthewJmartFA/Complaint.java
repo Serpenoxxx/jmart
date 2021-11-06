@@ -4,17 +4,13 @@ import java.text.SimpleDateFormat;
 
 public class Complaint
 {
-    public Date date;
     public String desc;
-    
-    public Complaint( String desc) {
+    public Date date;
 
-        this.date = new java.util.Date();
+    public Complaint(int id, String desc)
+    {
         this.desc = desc;
-    }
-    
-    public boolean read(String content) {
-        return false;
+        this.date = new Date();
     }
     
     public String toString() {

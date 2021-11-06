@@ -3,7 +3,7 @@ package BenedictoMatthewJmartFA;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Account extends Recognizable
+public class Account extends Serializable
 {
    public String name;
    public String email;
@@ -15,6 +15,7 @@ public class Account extends Recognizable
    
    public Account(String name, String email, String password, double balance)
    {
+       super(id);
        this.name = name;
        this.email = email;
        this.password = password;
