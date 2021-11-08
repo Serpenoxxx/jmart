@@ -3,7 +3,7 @@ package BenedictoMatthewJmartFA;
 import java.util.Date;
 import java.util.ArrayList;
 
-public abstract class Invoice
+public abstract class Invoice extends Serializable
 {
 
     enum Status { WAITING_CONFIRMATION, CANCELLED, ON_PROGRESS, ON_DELIVERY, COMPLAINT, FINISHED, FAILED };
@@ -18,6 +18,7 @@ public abstract class Invoice
     public ArrayList<Record> history = new ArrayList<>();
 
     protected Invoice(int buyerId, int productId) {
+        super();
         this.buyerId = buyerId;
         this.productId = productId;
         this.date = new Date();

@@ -3,18 +3,19 @@ import java.util.HashMap;
 
 public class Serializable implements Comparable<Serializable> {
 
-    public static final int id = 0;
+    public final int id;
 
     private static HashMap<Class<?>, Integer> mapCounter = new HashMap();
 
-    protected Serializable(int id) {
+    protected Serializable() {
 
         Integer counter = mapCounter.get(getClass());
         if(counter == null){
-            mapCounter.put(getClass(), 1);
+            mapCounter.put(getClass(), 0);
         } else {
             mapCounter.put(getClass(), counter + 1);
         }
+        this.id = mapCounter.get(getClass());
     }
 
     public boolean equals(Object a) {
@@ -25,7 +26,7 @@ public class Serializable implements Comparable<Serializable> {
         return (this.id == a.id);
     }
 
-    public static <T> int setClosingId(Class<T> clazz, int i) {
+    public static <T> int setClosingId(Class<T> clazz, int id) {
         return mapCounter.put(clazz,id);
     }
 

@@ -1,7 +1,7 @@
 package BenedictoMatthewJmartFA;
 
 
-public class Product
+public class Product extends Serializable
 {
     public int accountId;
     public String name;
@@ -12,6 +12,7 @@ public class Product
     public ProductRating rating;
     public int storeId;
     public byte shipmentPlans;
+    public double price;
 
     public Product(int accountId, int storeId, String name, int weight, boolean conditionUsed, Treasury pricetag, ProductCategory category, byte shipmentPlans)
     {
@@ -31,6 +32,6 @@ public class Product
     }
     
     public String toString() {
-        return "Name: " + this.name + "\n" + "Weight: " + this.weight + "\n" + "conditionUsed: " + this.conditionUsed + "\n" + "priceTag: " + this.pricetag.getAdjustedPrice(100000, 10) + "\n" + "category: " + this.category + "\n" + "";
+        return "Name: " + this.name + "\n" + "Weight: " + this.weight + "\n" + "conditionUsed: " + this.conditionUsed + "\n" + "priceTag: " + Treasury.getAdjustedPrice(100000, 10) + "\n" + "category: " + this.category + "\n" + "";
     }
 }
