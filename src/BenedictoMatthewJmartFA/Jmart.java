@@ -26,7 +26,7 @@ public class Jmart
 
         try{
             List<Product> list = read("src/BenedictoMatthewJmartFA/randomProductList.json");
-            List<Product> filter = filterByAccountId(list, 1, 0, 5);
+            List<Product> filter = filterByAccountId(list, 1, 1, 5);
             //list.forEach(product -> System.out.println(filter));
             System.out.println(filter);
 
@@ -45,7 +45,7 @@ public class Jmart
             }
         }
 
-        return filter;
+        return paginate(filter, page, pageSize, (e) -> e.accountId == accountId);
     }
 
     public static List<Product> filterByCategory(List<Product> list, ProductCategory category){
@@ -60,17 +60,17 @@ public class Jmart
                 filter.add(i);
             }
         }
-        return filter;
+        return paginate(filter, page, pageSize, (e) -> e.name.toLowerCase().contains(search.toLowerCase()));
     }
 
-    public static List<Product> filterByPrice(List<Product> list, double minPrice, double macPrice){
+    public static List<Product> filterByPrice(List<Product> list, double minPrice, double maxPrice){
     List<Product> result = new ArrayList<Product>();
 
     for(Product product : list){
         if(minPrice <= 0.0 && product.price < minPrice){
             continue;
         }
-        if(minPrice <= 0.0 && product.price > minPrice){
+        if(minPrice <= 0.0 && product.price > maxPrice){
             continue;
         }
         result.add(product);
@@ -79,14 +79,14 @@ public class Jmart
     }
 
     private static List<Product> paginate(List<Product> list, int page, int pageSize, Predicate<Product> pred) {
-        if (page <= 0 || pageSize <= 0) {
+        if (page < 0 || pageSize <= 0) {
             throw new IllegalArgumentException("Invalid Input!");
         }
 
         List<Product> paginated = new ArrayList<>();
 
         for (Product product : list) {
-            if (pred.predicate(product) == true) {
+            if (pred.predicate(product)) {
                 paginated.add(product);
             }
         }
@@ -105,7 +105,6 @@ public class Jmart
         List<Product> result = new ArrayList<Product>();
         Collections.addAll(result, products);
         return result;
-
     }
 
 
