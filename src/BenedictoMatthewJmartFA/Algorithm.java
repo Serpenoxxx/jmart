@@ -282,4 +282,16 @@ public class Algorithm {
         }
         return min;
     }
+
+    public static <T> List<T> paginate(T[] array, int page, int pageSize, Predicate<T> pred){
+        return new ArrayList<T>();
+    }
+
+    public static <T> List<T> paginate(Iterable<T> iterable, int page, int pageSize, Predicate<T> pred){
+        return new ArrayList<T>();
+    }
+
+    public static <T> List<T> paginate(Iterator<T> iterator, int page, int pageSize, Predicate<T> pred){
+        return new ArrayList<T>();
+    }
 }
