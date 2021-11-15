@@ -15,7 +15,7 @@ public class Jmart
 {
 
     public static long DELIVERED_LIMIT_MS = 3;
-        public static long ON_DELIVERY_LIMIT_MS = 4;
+    public static long ON_DELIVERY_LIMIT_MS = 4;
     public static long ON_PROGRESS_LIMIT_MS = 6;
     public static long WAITING_CONF_LIMIT_MS = 7;
 
@@ -43,21 +43,22 @@ public class Jmart
 
 
         public static boolean paymentTimekeeper(Payment payment) {
-            long time_elapsed = 0;
+        long startTime = System.currentTimeMillis();
+        for (Record record : payment.history) {
+            long time_elapsed = System.currentTimeMillis() - startTime;
 
-            for (Record record : payment.history) {
-                if (record.status == Status.WAITING_CONFIRMATION && time_elapsed > WAITING_CONF_LIMIT_MS) {
-                    record.status = Invoice.Status.FAILED;
-                } else if (record.status == Status.ON_PROGRESS && time_elapsed > ON_PROGRESS_LIMIT_MS) {
-                    record.status = Invoice.Status.FAILED;
-                } else if (record.status == Status.ON_DELIVERY && time_elapsed > ON_DELIVERY_LIMIT_MS) {
-                    record.status = Invoice.Status.DELIVERED;
-                } else if (record.status == Status.DELIVERED && time_elapsed > DELIVERED_LIMIT_MS) {
-                    record.status = Invoice.Status.FINISHED;
-                }
+            if (record.status == Status.WAITING_CONFIRMATION && time_elapsed > WAITING_CONF_LIMIT_MS) {
+                record.status = Invoice.Status.FAILED;
+            } else if (record.status == Status.ON_PROGRESS && time_elapsed > ON_PROGRESS_LIMIT_MS) {
+                record.status = Invoice.Status.FAILED;
+            } else if (record.status == Status.ON_DELIVERY && time_elapsed > ON_DELIVERY_LIMIT_MS) {
+                record.status = Invoice.Status.DELIVERED;
+            } else if (record.status == Status.DELIVERED && time_elapsed > DELIVERED_LIMIT_MS) {
+                record.status = Invoice.Status.FINISHED;
             }
-            return false;
         }
+        return false;
+    }
 
         System.out.println("account id:" + new Account(null, null, null, -1).id);
         System.out.println("account id:" + new Account(null, null, null, -1).id);

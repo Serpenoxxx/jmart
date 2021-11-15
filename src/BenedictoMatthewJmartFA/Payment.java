@@ -13,7 +13,6 @@ public class Payment extends Invoice
         super(buyerId, productId);
         this.productCount = productCount;
         this.shipment = shipment;
-        
     }
 
     public double getTotalPay(){
@@ -35,9 +34,12 @@ public class Payment extends Invoice
         return 0;
     }
 
-    static class Record {
+    static class record {
         public Status status;
         public Date date;
         public String message;
+    }
+
+    private class Record {
     }
 }
