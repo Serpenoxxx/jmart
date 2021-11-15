@@ -284,14 +284,28 @@ public class Algorithm {
     }
 
     public static <T> List<T> paginate(T[] array, int page, int pageSize, Predicate<T> pred){
-        return new ArrayList<T>();
+        Iterator<T> iterator = Arrays.stream(array).iterator();
+        return paginate(iterator, page, pageSize, pred);
     }
 
     public static <T> List<T> paginate(Iterable<T> iterable, int page, int pageSize, Predicate<T> pred){
-        return new ArrayList<T>();
+    Iterator<T> iterator = iterable.iterator();
+    return paginate(iterator, page, pageSize, pred);
     }
 
     public static <T> List<T> paginate(Iterator<T> iterator, int page, int pageSize, Predicate<T> pred){
-        return new ArrayList<T>();
+        List<T> paginated = new ArrayList<>();
+        int index = 0;
+        int startingPage = page * pageSize;
+        int lastPage = startingPage + pageSize;
+
+        while(iterator.hasNext()) {
+            T next = iterator.next();
+            if (index >= startingPage && index < lastPage && pred.predicate(next)) {
+                paginated.add(next);
+            }
+            index++;
+        }
+        return paginated;
     }
 }
