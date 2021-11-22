@@ -17,8 +17,7 @@ public class Product extends Serializable
     public byte shipmentPlans;
     public double price;
 
-    public Product(int accountId, int storeId, String name, int weight, boolean conditionUsed, double price, ProductCategory category, byte shipmentPlans)
-    {
+    public Product(int accountId, String name, int weight, boolean conditionUsed, double price, double discount, ProductCategory category, byte shipmentPlans){
         this.accountId = accountId;
         this.name = name;
         this.weight = weight;
@@ -26,9 +25,8 @@ public class Product extends Serializable
         this.price = price;
         this.discount = discount;
         this.category = category;
-        this.rating = new ProductRating();
-        this.storeId = storeId;
         this.shipmentPlans = shipmentPlans;
+
     }
 
     public boolean read(String content) {

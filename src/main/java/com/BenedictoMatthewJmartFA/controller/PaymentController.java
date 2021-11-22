@@ -1,9 +1,6 @@
 package com.BenedictoMatthewJmartFA.controller;
 
-import com.BenedictoMatthewJmartFA.Account;
-import com.BenedictoMatthewJmartFA.Invoice;
-import com.BenedictoMatthewJmartFA.ObjectPoolThread;
-import com.BenedictoMatthewJmartFA.Payment;
+import com.BenedictoMatthewJmartFA.*;
 import com.BenedictoMatthewJmartFA.dbjson.JsonAutowired;
 import com.BenedictoMatthewJmartFA.dbjson.JsonTable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +26,11 @@ public abstract class PaymentController implements BasicGetController<Payment> {
 
     @PostMapping("/{id}/accept")
     public boolean accept(int id) {
-
+        for(Payment coupon: getJsonTable()){
+            if(coupon.id == id){
+                return true;
+            }
+        }
         return false;
     }
 
@@ -40,7 +41,13 @@ public abstract class PaymentController implements BasicGetController<Payment> {
     }
 
     @PostMapping("/create")
-    public Payment create(@RequestParam int buyerId, @RequestParam int productId, @RequestParam int productCount, @RequestParam String shipmentAddress, @RequestParam byte shipmentPlan) {
+    public Payment create(
+            @RequestParam int buyerId,
+            @RequestParam int productId,
+            @RequestParam int productCount,
+            @RequestParam String shipmentAddress,
+            @RequestParam byte shipmentPlan
+    ){
 
         return null;
     }
@@ -76,4 +83,6 @@ public abstract class PaymentController implements BasicGetController<Payment> {
 
         return false;
     }
+
+
 }

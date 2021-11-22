@@ -1,7 +1,8 @@
 package com.BenedictoMatthewJmartFA;
 
-public class Coupon
-{
+import com.BenedictoMatthewJmartFA.dbjson.Serializable;
+
+public class Coupon extends Serializable {
     public final String name;
     public final int code;
     public final double cut;

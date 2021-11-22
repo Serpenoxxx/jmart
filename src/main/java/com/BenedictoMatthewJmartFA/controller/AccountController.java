@@ -5,6 +5,9 @@ import com.BenedictoMatthewJmartFA.dbjson.JsonAutowired;
 import com.BenedictoMatthewJmartFA.dbjson.JsonTable;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 
@@ -28,8 +31,22 @@ import java.util.regex.Pattern;
 
         @PostMapping("/login")
         public Account login(String email, String password){
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update(password.getBytes());
+                byte[] bytes = md.digest();
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < bytes.length; ++i) {
+                    sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+                }
+
+                password = sb.toString();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
         for(Account account : getJsonTable()){
-            if(account.email == email && account.password == password){
+            if(Objects.equals(account.email, email) && Objects.equals(account.password, password)){
                 return account;
             }
         }
@@ -38,7 +55,22 @@ import java.util.regex.Pattern;
 
         @PostMapping("/register")
         public Account register(String name, String email, String password){
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update(password.getBytes());
+                byte[] bytes = md.digest();
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < bytes.length; ++i) {
+                    sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+                }
+
+                password = sb.toString();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
         Account newAccount = new Account(name, email, password, 0.0);
+
         if ((!name.isBlank())){
             if(REGEX_PATTERN_EMAIL.matcher(email).matches() && REGEX_PATTERN_PASSWORD.matcher(password).matches()){
                 for(Account account : getJsonTable()){
