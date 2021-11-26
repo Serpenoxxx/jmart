@@ -3,10 +3,7 @@ package com.BenedictoMatthewJmartFA.controller;
 import com.BenedictoMatthewJmartFA.*;
 import com.BenedictoMatthewJmartFA.dbjson.JsonAutowired;
 import com.BenedictoMatthewJmartFA.dbjson.JsonTable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment")
@@ -25,9 +22,10 @@ public abstract class PaymentController implements BasicGetController<Payment> {
     }
 
     @PostMapping("/{id}/accept")
-    public boolean accept(int id) {
-        for(Payment coupon: getJsonTable()){
-            if(coupon.id == id){
+    public boolean accept(@PathVariable int id) {
+        for (Payment payment : getJsonTable()) {
+            if (payment.id == id && (payment.history.get(payment.history.size()-1).status == Invoice.Status.WAITING_CONFIRMATION)) {
+                payment.history.add(new Payment.Record(Invoice.Status.ON_PROGRESS, "Dalam Proses"));
                 return true;
             }
         }
@@ -35,8 +33,13 @@ public abstract class PaymentController implements BasicGetController<Payment> {
     }
 
     @PostMapping("/{id}/cancel")
-    public boolean cancel(int id) {
-
+    public boolean cancel(@PathVariable int id) {
+        for (Payment payment : getJsonTable()) {
+            if (payment.id == id && (payment.history.get(payment.history.size()-1).status == Invoice.Status.WAITING_CONFIRMATION)) {
+                payment.history.add(new Payment.Record(Invoice.Status.CANCELLED, "Dibatalkan"));
+                return true;
+            }
+        }
         return false;
     }
 
@@ -47,8 +50,24 @@ public abstract class PaymentController implements BasicGetController<Payment> {
             @RequestParam int productCount,
             @RequestParam String shipmentAddress,
             @RequestParam byte shipmentPlan
-    ){
+    ) {
+        Account account = Algorithm.<Account>find(AccountController.accountTable, (e) -> e.id == buyerId);
+        Product product = Algorithm.<Product>find(ProductController.productTable, (e) -> e.id == productId);
 
+        if ((account != null) && (product != null)) {
+            Payment payment = new Payment(buyerId, productId, productCount, null);
+            double totalPriceToPay = payment.getTotalPay(product);
+
+            if (account.balance >= totalPriceToPay ) {
+                Shipment shipmentDetail = new Shipment(shipmentAddress, 0, shipmentPlan, null);
+                account.balance -= totalPriceToPay;
+                payment = new Payment(buyerId, productId, productCount, shipmentDetail);
+                payment.history.add(new Payment.Record(Invoice.Status.WAITING_CONFIRMATION, "Menunggu Konfirmasi"));
+                paymentTable.add(payment);
+                poolThread.add(payment);
+                return payment;
+            }
+        }
         return null;
     }
 
@@ -57,8 +76,16 @@ public abstract class PaymentController implements BasicGetController<Payment> {
     }
 
     @PostMapping("/{id}/submit")
-    public boolean submit(int id, @RequestParam String receipt) {
-
+    public boolean submit(@PathVariable int id, @RequestParam String receipt) {
+        for (Payment payment : getJsonTable()) {
+            if (payment.id == id && (payment.history.get(payment.history.size()-1).status == Invoice.Status.ON_PROGRESS)) {
+                if (!receipt.isBlank()) {
+                    payment.shipment.receipt = receipt;
+                    payment.history.add(new Payment.Record(Invoice.Status.ON_DELIVERY, "Dalam Pengiriman"));
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -76,13 +103,12 @@ public abstract class PaymentController implements BasicGetController<Payment> {
         } else if (record.status == Invoice.Status.DELIVERED && time_elapsed > DELIVERED_LIMIT_MS) {
             payment.history.add(new Payment.Record(Invoice.Status.FINISHED, "Berhasil"));
         }
-
         if (record.status == Invoice.Status.FAILED && record.status == Invoice.Status.FINISHED) {
             return true;
         }
-
         return false;
     }
-
-
 }
+
+
+
