@@ -1,12 +1,6 @@
 package com.BenedictoMatthewJmartFA.dbjson;
 import java.util.HashMap;
 
-/**
- * Automatically assign id to an object with auto incrementing value.
- * First instantiation starts with id 0.
- * @author Netlab Team
- * @version 0.1
- */
 public class Serializable implements Comparable<Serializable>
 {
     private static HashMap<Class<?>, Integer> mapCounter = new HashMap<>();

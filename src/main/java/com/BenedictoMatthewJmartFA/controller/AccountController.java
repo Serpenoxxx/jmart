@@ -30,59 +30,70 @@ import java.util.regex.Pattern;
         }
 
         @PostMapping("/login")
-        public Account login(String email, String password){
-            try {
+        public Account login( @RequestParam String email, @RequestParam String password){
+            String generatedPassword = null;
+            try
+            {
                 MessageDigest md = MessageDigest.getInstance("MD5");
                 md.update(password.getBytes());
                 byte[] bytes = md.digest();
 
                 StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < bytes.length; ++i) {
+                for ( int i = 0; i<bytes.length; i++)
+                {
                     sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
                 }
 
-                password = sb.toString();
-            } catch (NoSuchAlgorithmException e) {
+                generatedPassword = sb.toString();
+            } catch (NoSuchAlgorithmException e)
+            {
                 e.printStackTrace();
             }
-        for(Account account : getJsonTable()){
-            if(Objects.equals(account.email, email) && Objects.equals(account.password, password)){
-                return account;
+
+
+            for(Account acc : getJsonTable()){
+                if(acc.email.equals(email) && acc.password.equals((password))){
+                    return acc;
+                }
             }
-        }
-        return null;
+
+            return null;
         }
 
         @PostMapping("/register")
-        public Account register(String name, String email, String password){
-            try {
-                MessageDigest md = MessageDigest.getInstance("MD5");
-                md.update(password.getBytes());
-                byte[] bytes = md.digest();
+        public Account register( @RequestParam String name,  @RequestParam String email,  @RequestParam String password){
+            Account account = new Account(name, email, password, 0.0);
+            String passwordToHashReg = password;
+            String generatedPassword = null;
 
+            try
+            {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update(passwordToHashReg.getBytes());
+                byte[] bytes = md.digest();
                 StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < bytes.length; ++i) {
+                for(int i = 0; i < bytes.length; i++)
+                {
                     sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
                 }
-
                 password = sb.toString();
-            } catch (NoSuchAlgorithmException e) {
+            } catch (NoSuchAlgorithmException e)
+            {
                 e.printStackTrace();
             }
-        Account newAccount = new Account(name, email, password, 0.0);
 
-        if ((!name.isBlank())){
-            if(REGEX_PATTERN_EMAIL.matcher(email).matches() && REGEX_PATTERN_PASSWORD.matcher(password).matches()){
-                for(Account account : getJsonTable()){
-                    if(account.email.equals(email)){
-                        return null;
+            if(name.isBlank() == false){
+                if(REGEX_PATTERN_EMAIL.matcher(email).matches() &&  REGEX_PATTERN_PASSWORD.matcher(password).matches()){
+                    for(Account acc : getJsonTable()){
+                        if(acc.email.equals(email)){
+                            return null;
+                        }
                     }
+                    accountTable.add(account);
+                    return account;
                 }
-                accountTable.add(newAccount);
-                return newAccount;
             }
-        }
-        return null;
+            return null;
         }
         @PostMapping("/{id}/registerStore")
         public Store registerStore(int id, String name, String address, String phoneNumber){
