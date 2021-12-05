@@ -13,7 +13,7 @@ public abstract class PaymentController implements BasicGetController<Payment> {
     public static final long ON_DELIVERY_LIMIT_MS = 10;
     public static final long ON_PROGRESS_LIMIT_MS = 10;
     public static final long WAITING_CONF_LIMIT_MS = 10;
-    @JsonAutowired(filepath=".scr/main/java/com/test.json", value= Payment.class)
+    @JsonAutowired(filepath="D:\\College\\Sem3\\OOP\\Json", value= Payment.class)
     public static JsonTable<Payment> paymentTable;
     public static ObjectPoolThread<Payment> poolThread;
     static {

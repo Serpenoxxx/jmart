@@ -96,7 +96,7 @@ import java.util.regex.Pattern;
             return null;
         }
         @PostMapping("/{id}/registerStore")
-        public Store registerStore(int id, String name, String address, String phoneNumber){
+        public Store registerStore(@PathVariable int id, @RequestParam String name, @RequestParam String address, @RequestParam String phoneNumber){
         for (Account account : accountTable){
             if(account.id == id && account.store == null){
                 Store store = new Store(name, address, phoneNumber, 0.0);
@@ -107,7 +107,7 @@ import java.util.regex.Pattern;
         return null;
         }
         @PostMapping("/{id}/topUp")
-        public boolean topUp(int id, double balance){
+        public boolean topUp(@PathVariable int id, @RequestParam double balance){
         for(Account account : accountTable){
             if(account.id == id){
             account.balance += balance;
