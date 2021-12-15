@@ -7,25 +7,25 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment")
-public abstract class PaymentController implements BasicGetController<Payment> {
+public class PaymentController implements BasicGetController<Payment> {
 
     public static final long DELIVERED_LIMIT_MS = 10;
     public static final long ON_DELIVERY_LIMIT_MS = 10;
     public static final long ON_PROGRESS_LIMIT_MS = 10;
     public static final long WAITING_CONF_LIMIT_MS = 10;
-    @JsonAutowired(filepath="D:\\College\\Sem3\\OOP\\Json", value= Payment.class)
+    @JsonAutowired(filepath=".scr/main/java/com/payment.json", value= Payment.class)
     public static JsonTable<Payment> paymentTable;
-    public static ObjectPoolThread<Payment> poolThread;
-    static {
-        new ObjectPoolThread<Payment>("Payment-Thread", PaymentController::timekeeper);
-        poolThread.start();
-    }
+//    public static ObjectPoolThread<Payment> poolThread;
+//    static {
+//        new ObjectPoolThread<Payment>("Payment-Thread", PaymentController::timekeeper);
+//        poolThread.start();
+//    }
 
     @PostMapping("/{id}/accept")
     public boolean accept(@PathVariable int id) {
         for (Payment payment : getJsonTable()) {
             if (payment.id == id && (payment.history.get(payment.history.size()-1).status == Invoice.Status.WAITING_CONFIRMATION)) {
-                payment.history.add(new Payment.Record(Invoice.Status.ON_PROGRESS, "Dalam Proses"));
+                payment.history.add(new Payment.Record(Invoice.Status.ON_PROGRESS, "In Progress"));
                 return true;
             }
         }
@@ -36,7 +36,7 @@ public abstract class PaymentController implements BasicGetController<Payment> {
     public boolean cancel(@PathVariable int id) {
         for (Payment payment : getJsonTable()) {
             if (payment.id == id && (payment.history.get(payment.history.size()-1).status == Invoice.Status.WAITING_CONFIRMATION)) {
-                payment.history.add(new Payment.Record(Invoice.Status.CANCELLED, "Dibatalkan"));
+                payment.history.add(new Payment.Record(Invoice.Status.CANCELLED, "Canceled"));
                 return true;
             }
         }
@@ -62,9 +62,9 @@ public abstract class PaymentController implements BasicGetController<Payment> {
                 Shipment shipmentDetail = new Shipment(shipmentAddress, 0, shipmentPlan, null);
                 account.balance -= totalPriceToPay;
                 payment = new Payment(buyerId, productId, productCount, shipmentDetail);
-                payment.history.add(new Payment.Record(Invoice.Status.WAITING_CONFIRMATION, "Menunggu Konfirmasi"));
+                payment.history.add(new Payment.Record(Invoice.Status.WAITING_CONFIRMATION, "Awaiting Confirmation"));
                 paymentTable.add(payment);
-                poolThread.add(payment);
+                //poolThread.add(payment);
                 return payment;
             }
         }
@@ -81,7 +81,7 @@ public abstract class PaymentController implements BasicGetController<Payment> {
             if (payment.id == id && (payment.history.get(payment.history.size()-1).status == Invoice.Status.ON_PROGRESS)) {
                 if (!receipt.isBlank()) {
                     payment.shipment.receipt = receipt;
-                    payment.history.add(new Payment.Record(Invoice.Status.ON_DELIVERY, "Dalam Pengiriman"));
+                    payment.history.add(new Payment.Record(Invoice.Status.ON_DELIVERY, "In Progress"));
                     return true;
                 }
             }
@@ -95,13 +95,13 @@ public abstract class PaymentController implements BasicGetController<Payment> {
         Payment.Record record = payment.history.get(payment.history.size() - 1);
         long time_elapsed = System.currentTimeMillis() - startTime;
         if (record.status == Invoice.Status.WAITING_CONFIRMATION && time_elapsed > WAITING_CONF_LIMIT_MS) {
-            payment.history.add(new Payment.Record(Invoice.Status.FAILED, "Gagal"));
+            payment.history.add(new Payment.Record(Invoice.Status.FAILED, "Failed"));
         } else if (record.status == Invoice.Status.ON_PROGRESS && time_elapsed > ON_PROGRESS_LIMIT_MS) {
-            payment.history.add(new Payment.Record(Invoice.Status.FAILED, "Gagal"));
+            payment.history.add(new Payment.Record(Invoice.Status.FAILED, "Failed"));
         } else if (record.status == Invoice.Status.ON_DELIVERY && time_elapsed > ON_DELIVERY_LIMIT_MS) {
-            payment.history.add(new Payment.Record(Invoice.Status.DELIVERED, "Berhasil"));
+            payment.history.add(new Payment.Record(Invoice.Status.DELIVERED, "Success"));
         } else if (record.status == Invoice.Status.DELIVERED && time_elapsed > DELIVERED_LIMIT_MS) {
-            payment.history.add(new Payment.Record(Invoice.Status.FINISHED, "Berhasil"));
+            payment.history.add(new Payment.Record(Invoice.Status.FINISHED, "Success"));
         }
         if (record.status == Invoice.Status.FAILED && record.status == Invoice.Status.FINISHED) {
             return true;

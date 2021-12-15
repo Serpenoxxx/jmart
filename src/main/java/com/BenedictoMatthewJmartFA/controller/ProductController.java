@@ -14,14 +14,12 @@ import static com.BenedictoMatthewJmartFA.controller.AccountController.accountTa
 @RestController
 @RequestMapping("/product")
 public class ProductController implements BasicGetController<Product>{
-    @JsonAutowired(filepath=".scr/main/java/com/test.json", value= Product.class)
+    @JsonAutowired(filepath=".scr/main/java/com/product.json", value= Product.class)
     public static JsonTable<Product> productTable;
-
 
     public JsonTable<Product> getJsonTable() {
         return productTable;
     }
-
 
     @PostMapping("/create")
     public Product create(@RequestParam int accountId,
@@ -48,30 +46,41 @@ public class ProductController implements BasicGetController<Product>{
         return Algorithm.paginate(productTable, page, pageSize, pred->pred.accountId == id);
     }
     @GetMapping("/getFiltered")
-    public List<Product> getProductFiltered(@RequestParam(defaultValue="7") int page,
-                                            @RequestParam(defaultValue="4") int pageSize,
+    public List<Product> getProductFiltered(@RequestParam(defaultValue="1") int page,
+                                            @RequestParam(defaultValue="5") int pageSize,
                                             @RequestParam int accountId,
                                             @RequestParam String search,
                                             @RequestParam int minPrice,
                                             @RequestParam int maxPrice,
-                                            @RequestParam ProductCategory category) {
+                                            @RequestParam ProductCategory category,
+                                            @RequestParam boolean conditionUsed) {
         List<Product> filtered = new ArrayList<>();
 
         for (Product product : getJsonTable()) {
-            if (product.accountId == accountId || Objects.equals(product.name, search) || product.category == category) {
-                filtered.add(product);
+
+            if(product.accountId == accountId){
+//                System.out.println(product);
+
+                if(product.conditionUsed == conditionUsed){
+                    if(product.category == category){
+//                    System.out.println(product);
+                        if((product.name.toUpperCase()).contains(search.toUpperCase())){
+
+                            if(maxPrice == 0.0 && minPrice != 0.0){
+                                if(product.price >= minPrice){
+                                    System.out.println(product);
+                                    filtered.add(product);
+                                }
+                            } else if(product.price >= minPrice && product.price <= maxPrice){
+                                System.out.println(product);
+                                filtered.add(product);
+                            }
+                        }
+                    }
+                }
             }
         }
-
-        if (minPrice == 0.0) {
-            filtered.addAll(Algorithm.<Product>collect(getJsonTable(), (e) -> e.price <= maxPrice));
-        } else if (maxPrice == 0.0) {
-            filtered.addAll(Algorithm.<Product>collect(getJsonTable(), (e) -> e.price >= minPrice));
-        } else {
-            filtered.addAll(Algorithm.<Product>collect(getJsonTable(), (e) -> e.price >= minPrice && e.price <= maxPrice));
-        }
-
+        System.out.println(filtered);
         return filtered;
     }
-
 }

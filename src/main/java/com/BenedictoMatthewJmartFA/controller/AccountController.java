@@ -15,13 +15,12 @@ import java.util.regex.Pattern;
     @RequestMapping("/account")
     public class AccountController implements BasicGetController<Account>
     {
-
         public static final String REGEX_EMAIL = "^[a-zA-Z0-9_&_*~]+(?:\\.[a-zA-Z0-9_&_*~]+)*@[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9-]+)*$";
         public static final String REGEX_PASSWORD= "^(?=.*\\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$";
         public static final Pattern REGEX_PATTERN_EMAIL = Pattern.compile(REGEX_EMAIL);
         public static final Pattern REGEX_PATTERN_PASSWORD = Pattern.compile(REGEX_PASSWORD);
 
-        @JsonAutowired(filepath=".scr/main/java/com/test.json", value=Account.class)
+        @JsonAutowired(filepath=".scr/main/java/com/account.json", value=Account.class)
         public static JsonTable<Account> accountTable;
 
         @Override
@@ -50,7 +49,6 @@ import java.util.regex.Pattern;
                 e.printStackTrace();
             }
 
-
             for(Account acc : getJsonTable()){
                 if(acc.email.equals(email) && acc.password.equals((password))){
                     return acc;
@@ -65,7 +63,6 @@ import java.util.regex.Pattern;
             Account account = new Account(name, email, password, 0.0);
             String passwordToHashReg = password;
             String generatedPassword = null;
-
             try
             {
                 MessageDigest md = MessageDigest.getInstance("MD5");
@@ -116,7 +113,6 @@ import java.util.regex.Pattern;
         }
         return false;
         }
-
 
     }
 

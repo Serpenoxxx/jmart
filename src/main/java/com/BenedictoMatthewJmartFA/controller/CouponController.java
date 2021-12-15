@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/coupon")
 public class CouponController implements BasicGetController<Coupon>{
-    @JsonAutowired(filepath=".scr/main/java/com/test.json", value= Coupon.class)
+    @JsonAutowired(filepath=".scr/main/java/com/coupon.json", value= Coupon.class)
     public static JsonTable<Coupon> couponTable;
 
     public JsonTable<Coupon> getJsonTable(){
@@ -44,6 +44,4 @@ public class CouponController implements BasicGetController<Coupon>{
     public List<Coupon> getAvailable (int page, int pageSize ){
         return Algorithm.paginate(couponTable, page, pageSize, pred-> !pred.isUsed());
     }
-
-
 }

@@ -1,7 +1,6 @@
 package com.BenedictoMatthewJmartFA;
 
 import com.BenedictoMatthewJmartFA.dbjson.Serializable;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +21,6 @@ public class Account extends Serializable
        this.password = password;
        this.balance = balance;
    }
-   
 
    public boolean read(String content)
    {

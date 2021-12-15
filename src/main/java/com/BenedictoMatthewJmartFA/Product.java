@@ -26,7 +26,6 @@ public class Product extends Serializable
         this.discount = discount;
         this.category = category;
         this.shipmentPlans = shipmentPlans;
-
     }
 
     public boolean read(String content) {
