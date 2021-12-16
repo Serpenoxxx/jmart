@@ -3,6 +3,12 @@ package com.BenedictoMatthewJmartFA;
 import java.util.Vector;
 import java.util.function.Function;
 
+/**
+ * Contains the threading used in the main class.
+ *
+ * @author Benedicto Matthew W
+ */
+
 public class ObjectPoolThread<T> extends Thread {
 
     private boolean exitSignal = false;

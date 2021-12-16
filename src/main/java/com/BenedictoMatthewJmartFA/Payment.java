@@ -3,6 +3,12 @@ package com.BenedictoMatthewJmartFA;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Contains invoices related to payment information.
+ *
+ * @author Benedicto Matthew W
+ */
+
 public class Payment extends Invoice
 {
     public Shipment shipment;

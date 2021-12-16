@@ -2,6 +2,12 @@ package com.BenedictoMatthewJmartFA;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Contains algorithms used across the app.
+ *
+ * @author Benedicto Matthew W
+ */
+
 public class Algorithm {
     private Algorithm() {
 

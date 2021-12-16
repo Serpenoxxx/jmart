@@ -1,5 +1,10 @@
 package com.BenedictoMatthewJmartFA;
 
+/**
+ * Contains details regarding adjusted price of product.
+ *
+ * @author Benedicto Matthew W
+ */
 
 public class Treasury
 {

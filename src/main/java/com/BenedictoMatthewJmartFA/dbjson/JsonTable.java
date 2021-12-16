@@ -14,6 +14,7 @@ import com.google.gson.stream.JsonReader;
  * @version 0.1
  * @param <T> Type of component elements (may translated as JSON Object)
  */
+
 public class JsonTable<T> extends Vector<T>
 {
     private static final Gson gson = new Gson();

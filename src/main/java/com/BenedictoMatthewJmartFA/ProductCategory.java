@@ -1,5 +1,10 @@
 package com.BenedictoMatthewJmartFA;
 
+/**
+ * Enum to store item categories.
+ *
+ * @author Benedicto Matthew W
+ */
 
 public enum ProductCategory
 {

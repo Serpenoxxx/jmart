@@ -1,15 +1,21 @@
 package com.BenedictoMatthewJmartFA.controller;
+
 import com.BenedictoMatthewJmartFA.Account;
 import com.BenedictoMatthewJmartFA.Store;
 import com.BenedictoMatthewJmartFA.dbjson.JsonAutowired;
 import com.BenedictoMatthewJmartFA.dbjson.JsonTable;
-import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.bind.annotation.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
+/**
+ * Controls all requests related to account with RestController
+ * implements BasicGetController
+ *
+ * @author Benedicto Matthew W
+ */
 
 @RestController
     @RequestMapping("/account")
@@ -28,8 +34,18 @@ import java.util.regex.Pattern;
         return accountTable;
         }
 
+        /**
+         * Validates the login credentials. Will check encrypted password.
+         *
+         * @param  email passed from request to validate email from json file.
+         * @param  password passed from request to validate password from json file.
+         * @exception  NoSuchAlgorithmException on error.
+         * @return  Account class that stores all details regarding the logged account.
+         */
+
         @PostMapping("/login")
-        public Account login( @RequestParam String email, @RequestParam String password){
+        public Account login( @RequestParam String email,
+                              @RequestParam String password){
             String generatedPassword = null;
             try
             {
@@ -58,6 +74,17 @@ import java.util.regex.Pattern;
             return null;
         }
 
+        /**
+         * Creates an account and stores it in the Json file.
+         * Will only create if there are no blanks.
+         *
+         * @param  name passed from request to fill account name.
+         * @param  email passed from request to fill account email.
+         * @param  password passed from request to fill account password.
+         * @exception  NoSuchAlgorithmException on error.
+         * @return  account credentials of new account.
+         */
+
         @PostMapping("/register")
         public Account register( @RequestParam String name,  @RequestParam String email,  @RequestParam String password){
             Account account = new Account(name, email, password, 0.0);
@@ -79,7 +106,7 @@ import java.util.regex.Pattern;
                 e.printStackTrace();
             }
 
-            if(name.isBlank() == false){
+            if(!name.isBlank()){
                 if(REGEX_PATTERN_EMAIL.matcher(email).matches() &&  REGEX_PATTERN_PASSWORD.matcher(password).matches()){
                     for(Account acc : getJsonTable()){
                         if(acc.email.equals(email)){
@@ -92,6 +119,18 @@ import java.util.regex.Pattern;
             }
             return null;
         }
+
+        /**
+         * Creates a store with data from the parameters.
+         * Balance will always start at 0.
+         *
+         * @param  id to bind a store to a certain account id.
+         * @param  name passed from request to fill store name.
+         * @param  address passed from request to fill store address.
+         * @param  phoneNumber passed from request to fill store phone number.
+         * @return  store owned by the account.
+         */
+
         @PostMapping("/{id}/registerStore")
         public Store registerStore(@PathVariable int id, @RequestParam String name, @RequestParam String address, @RequestParam String phoneNumber){
         for (Account account : accountTable){
@@ -103,6 +142,15 @@ import java.util.regex.Pattern;
         }
         return null;
         }
+
+        /**
+         * Tops up an account's balance.
+         *
+         * @param  id to check and bind a balance to a certain account id.
+         * @param  balance passed from request to fill account balance.
+         * @return  balance of the account.
+         */
+
         @PostMapping("/{id}/topUp")
         public boolean topUp(@PathVariable int id, @RequestParam double balance){
         for(Account account : accountTable){

@@ -1,6 +1,12 @@
 package com.BenedictoMatthewJmartFA.dbjson;
 import java.util.HashMap;
 
+/**
+ * Handles the ids of every class that inherits Serializable.
+ *
+ * @author Benedicto Matthew W
+ */
+
 public class Serializable implements Comparable<Serializable>
 {
     private static HashMap<Class<?>, Integer> mapCounter = new HashMap<>();

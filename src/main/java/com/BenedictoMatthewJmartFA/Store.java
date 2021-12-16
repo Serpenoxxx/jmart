@@ -1,6 +1,13 @@
 package com.BenedictoMatthewJmartFA;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+/**
+ * Contains details regarding store owned by account.
+ *
+ * @author Benedicto Matthew W
+ */
 
 public class Store{
     public String name;
@@ -30,8 +37,8 @@ public class Store{
         Pattern pattern2 = Pattern.compile(REGEX_PHONE);
         Matcher matcher = pattern.matcher(this.name);
         Matcher matcher2 = pattern2.matcher(this.phoneNumber);
-        
-        if(matcher.find() == true && matcher2.find() == true){
+
+        if(matcher.find() && matcher2.find()){
             return true;
         }
         return false;

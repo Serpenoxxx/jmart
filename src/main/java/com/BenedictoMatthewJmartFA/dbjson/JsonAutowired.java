@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
  * @author Netlab Team
  * @version 0.1
  */
+
 @Retention(value=RetentionPolicy.RUNTIME)
 @Target(value={ElementType.FIELD})
 public @interface JsonAutowired

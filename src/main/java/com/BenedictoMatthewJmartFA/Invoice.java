@@ -4,11 +4,17 @@ import com.BenedictoMatthewJmartFA.dbjson.Serializable;
 
 import java.util.Date;
 
+/**
+ * Contains the invoice for payments made.
+ *
+ * @author Benedicto Matthew W
+ */
+
 public abstract class Invoice extends Serializable
 {
 
-    public enum Status { WAITING_CONFIRMATION, CANCELLED, ON_PROGRESS, ON_DELIVERY, COMPLAINT, FINISHED, FAILED, DELIVERED };
-    enum Rating { NONE, BAD, NEUTRAL, GOOD };
+    public enum Status { WAITING_CONFIRMATION, CANCELLED, ON_PROGRESS, ON_DELIVERY, COMPLAINT, FINISHED, FAILED, DELIVERED }
+    enum Rating { NONE, BAD, NEUTRAL, GOOD }
     
     public Date date;
     public int buyerId;

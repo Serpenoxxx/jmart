@@ -1,5 +1,10 @@
 package com.BenedictoMatthewJmartFA;
 
+/**
+ * Contains the ratings of a product.
+ *
+ * @author Benedicto Matthew W
+ */
 
 public class ProductRating
 {
@@ -10,7 +15,7 @@ public class ProductRating
         this.total = 0;
         this.count = 0;
     }
-    
+
     public void insert(int rating){
     count += 1;
     total = (long)(total + rating);

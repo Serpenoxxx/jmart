@@ -1,7 +1,13 @@
 package com.BenedictoMatthewJmartFA;
 
-
 import com.BenedictoMatthewJmartFA.dbjson.Serializable;
+
+/**
+ * Contains the data for products.
+ * Inherits Serializable.
+ *
+ * @author Benedicto Matthew W
+ */
 
 public class Product extends Serializable
 {

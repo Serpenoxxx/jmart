@@ -5,6 +5,13 @@ import com.BenedictoMatthewJmartFA.dbjson.JsonAutowired;
 import com.BenedictoMatthewJmartFA.dbjson.JsonTable;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controls all requests related to payment with RestController
+ * implements BasicGetController
+ *
+ * @author Benedicto Matthew W
+ */
+
 @RestController
 @RequestMapping("/payment")
 public class PaymentController implements BasicGetController<Payment> {
@@ -13,24 +20,45 @@ public class PaymentController implements BasicGetController<Payment> {
     public static final long ON_DELIVERY_LIMIT_MS = 10;
     public static final long ON_PROGRESS_LIMIT_MS = 10;
     public static final long WAITING_CONF_LIMIT_MS = 10;
+
     @JsonAutowired(filepath=".scr/main/java/com/payment.json", value= Payment.class)
     public static JsonTable<Payment> paymentTable;
-//    public static ObjectPoolThread<Payment> poolThread;
+    public static ObjectPoolThread<Payment> poolThread;
+    public JsonTable<Payment> getJsonTable() {
+        return paymentTable;
+    }
+
 //    static {
 //        new ObjectPoolThread<Payment>("Payment-Thread", PaymentController::timekeeper);
 //        poolThread.start();
 //    }
 
+    /**
+     * Accepts the payment of a certain item if status is WAITING_CONFIRMATION.
+     * Changes status to ON_PROGRESS if accepted.
+     *
+     * @param  id  checks the item id.
+     * @return  boolean representing status of item.
+     */
+
     @PostMapping("/{id}/accept")
     public boolean accept(@PathVariable int id) {
         for (Payment payment : getJsonTable()) {
             if (payment.id == id && (payment.history.get(payment.history.size()-1).status == Invoice.Status.WAITING_CONFIRMATION)) {
-                payment.history.add(new Payment.Record(Invoice.Status.ON_PROGRESS, "In Progress"));
+                payment.history.add(new Payment.Record(Invoice.Status.ON_PROGRESS, "On Progress"));
                 return true;
             }
         }
         return false;
     }
+
+    /**
+     * Cancels the payment of a certain item if status is WAITING_CONFIRMATION.
+     * Changes status to CANCELLED if canceled.
+     *
+     * @param  id  checks the item id.
+     * @return  boolean representing status of item.
+     */
 
     @PostMapping("/{id}/cancel")
     public boolean cancel(@PathVariable int id) {
@@ -69,10 +97,6 @@ public class PaymentController implements BasicGetController<Payment> {
             }
         }
         return null;
-    }
-
-    public JsonTable<Payment> getJsonTable() {
-        return paymentTable;
     }
 
     @PostMapping("/{id}/submit")

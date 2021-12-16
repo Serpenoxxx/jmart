@@ -2,6 +2,13 @@ package com.BenedictoMatthewJmartFA;
 
 import com.BenedictoMatthewJmartFA.dbjson.Serializable;
 
+/**
+ * Contains coupon related information and when it is used
+ * during a transaction.
+ *
+ * @author Benedicto Matthew W
+ */
+
 public class Coupon extends Serializable {
     public final String name;
     public final int code;
@@ -24,7 +31,7 @@ public class Coupon extends Serializable {
     }
     
     public boolean canApply(double price, double discount){
-        if((Treasury.getAdjustedPrice(100000, 10) >= this.minimum) && (used == false)){
+        if((Treasury.getAdjustedPrice(100000, 10) >= this.minimum) && (!used)){
             return true;
         } else{
             return false;

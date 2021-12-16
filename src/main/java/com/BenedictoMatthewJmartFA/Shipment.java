@@ -3,6 +3,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+/**
+ * Contains shipment plans
+ *
+ * @author Benedicto Matthew W
+ */
+
 public class Shipment {
 
     static class Plan {
@@ -14,11 +20,11 @@ public class Shipment {
     }
 
     public static final SimpleDateFormat ESTIMATION_FORMAT = new SimpleDateFormat("EEE MMMM dd yyyy");
-    public static final Plan INSTANT = new Plan((byte)00000001);
-    public static final Plan SAME_DAY = new Plan((byte)00000010);
-    public static final Plan NEXT_DAY = new Plan((byte)00000100);
-    public static final Plan REGULER = new Plan((byte)00001000);
-    public static final Plan KARGO = new Plan((byte)00010000);
+    public static final Plan INSTANT = new Plan((byte)(1 << 0));    //1
+    public static final Plan SAME_DAY = new Plan((byte)(1 << 1));   //2
+    public static final Plan NEXT_DAY = new Plan((byte)(1 << 2));   //4
+    public static final Plan REGULER = new Plan((byte)(1 << 3));    //8
+    public static final Plan KARGO = new Plan((byte)(1 << 4));      //16
 
     public String address;
     public int cost;
@@ -32,23 +38,22 @@ public class Shipment {
         this.receipt = receipt;
     }
 
-    public String getEstimatedArrival(Date reference) {
+    public String getEstimatedArrival(Date reference){
         Calendar cal = Calendar.getInstance();
-        cal.setTime(reference);
-
-        if (this.plan == ((byte)00000001) || this.plan == ((byte)00000010)) {
-            return ESTIMATION_FORMAT.format(cal.getTime());
-        } else if (this.plan == ((byte)00000100)) {
-            cal.add(Calendar.DATE, 1);
-            return ESTIMATION_FORMAT.format(cal.getTime());
-        } else if (this.plan == ((byte)00001000)) {
-            cal.add(Calendar.DATE, 2);
-            return ESTIMATION_FORMAT.format(cal.getTime());
-        } else if (this.plan == ((byte)00010000)) {
-            cal.add(Calendar.DATE, 5);
-            return ESTIMATION_FORMAT.format(cal.getTime());
-        } else {
-            return null;
+        if(this.plan == 1<<0|| this.plan == 1<<1){
+            return ESTIMATION_FORMAT.format(reference.getTime());
+        }else if(this.plan == 1<<2){
+            cal.setTime(reference);
+            cal.add(Calendar.DATE,1);
+            return ESTIMATION_FORMAT.format(cal);
+        }else if(this.plan == 1<<3){
+            cal.setTime(reference);
+            cal.add(Calendar.DATE,2);
+            return ESTIMATION_FORMAT.format(cal);
+        }else{
+            cal.setTime(reference);
+            cal.add(Calendar.DATE,5);
+            return ESTIMATION_FORMAT.format(cal);
         }
     }
 

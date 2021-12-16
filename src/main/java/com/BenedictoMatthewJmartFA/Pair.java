@@ -1,5 +1,11 @@
 package com.BenedictoMatthewJmartFA;
 
+/**
+ * Class is unused.
+ *
+ * @author Benedicto Matthew W
+ */
+
 public class Pair<T,U> {
     public T first;
     public U second;

@@ -2,6 +2,12 @@ package com.BenedictoMatthewJmartFA;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+/**
+ * Contains complaints and their dates.
+ *
+ * @author Benedicto Matthew W
+ */
+
 public class Complaint
 {
     public String desc;
