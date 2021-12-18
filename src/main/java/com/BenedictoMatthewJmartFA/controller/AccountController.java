@@ -86,7 +86,9 @@ import java.util.regex.Pattern;
          */
 
         @PostMapping("/register")
-        public Account register( @RequestParam String name,  @RequestParam String email,  @RequestParam String password){
+        public Account register( @RequestParam String name,
+                                 @RequestParam String email,
+                                 @RequestParam String password){
             Account account = new Account(name, email, password, 0.0);
             String passwordToHashReg = password;
             String generatedPassword = null;
@@ -132,7 +134,10 @@ import java.util.regex.Pattern;
          */
 
         @PostMapping("/{id}/registerStore")
-        public Store registerStore(@PathVariable int id, @RequestParam String name, @RequestParam String address, @RequestParam String phoneNumber){
+        public Store registerStore(@PathVariable int id,
+                                   @RequestParam String name,
+                                   @RequestParam String address,
+                                   @RequestParam String phoneNumber){
         for (Account account : accountTable){
             if(account.id == id && account.store == null){
                 Store store = new Store(name, address, phoneNumber, 0.0);
@@ -152,7 +157,8 @@ import java.util.regex.Pattern;
          */
 
         @PostMapping("/{id}/topUp")
-        public boolean topUp(@PathVariable int id, @RequestParam double balance){
+        public boolean topUp(@PathVariable int id,
+                             @RequestParam double balance){
         for(Account account : accountTable){
             if(account.id == id){
             account.balance += balance;

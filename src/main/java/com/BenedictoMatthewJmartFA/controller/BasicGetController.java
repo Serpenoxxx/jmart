@@ -29,7 +29,7 @@ public interface BasicGetController <T extends Serializable>{
             return obj;
         }
     }
-    return null;
+    return getJsonTable().get(id);
     }
 
     public abstract JsonTable<T> getJsonTable();
@@ -37,7 +37,7 @@ public interface BasicGetController <T extends Serializable>{
     @GetMapping("/page")
     public default List<T> getPage(@RequestParam int page, @RequestParam int pageSize){
         page = 1;
-        pageSize = 2;
+        pageSize = 10;
     return Algorithm.paginate(getJsonTable(), page, pageSize, (e) -> true);
     }
 

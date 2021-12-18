@@ -16,10 +16,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Jmart {
-    public static long DELIVERED_LIMIT_MS = 3;
-    public static long ON_DELIVERY_LIMIT_MS = 4;
-    public static long ON_PROGRESS_LIMIT_MS = 6;
-    public static long WAITING_CONF_LIMIT_MS = 7;
+    public static long DELIVERED_LIMIT_MS = 100;
+    public static long ON_DELIVERY_LIMIT_MS = 300;
+    public static long ON_PROGRESS_LIMIT_MS = 500;
+    public static long WAITING_CONF_LIMIT_MS = 700;
 
     public static void main(String[] args) {
         SpringApplication.run(Jmart.class, args);

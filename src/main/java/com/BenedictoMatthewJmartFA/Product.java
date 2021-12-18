@@ -12,16 +12,13 @@ import com.BenedictoMatthewJmartFA.dbjson.Serializable;
 public class Product extends Serializable
 {
     public int accountId;
-    public String name;
-    public int weight;
-    public double discount;
-    public boolean conditionUsed;
-    public Treasury pricetag;
     public ProductCategory category;
-    public ProductRating rating;
-    public int storeId;
-    public byte shipmentPlans;
+    public boolean conditionUsed;
+    public double discount;
+    public String name;
     public double price;
+    public byte shipmentPlans;
+    public int weight;
 
     public Product(int accountId, String name, int weight, boolean conditionUsed, double price, double discount, ProductCategory category, byte shipmentPlans){
         this.accountId = accountId;

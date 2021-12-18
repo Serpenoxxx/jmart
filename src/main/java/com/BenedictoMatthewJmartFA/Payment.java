@@ -11,33 +11,29 @@ import java.util.Date;
 
 public class Payment extends Invoice
 {
-    public Shipment shipment;
+    public ArrayList<Record> history = new ArrayList<>();
     public int productCount;
-    public ArrayList<Record> history;
+    public Shipment shipment;
 
-    public Payment (int buyerId, int productId, int productCount, Shipment shipment)
-    {
-        super(buyerId, productId);
+    public Payment(int buyerId, int productId, int productCount, Shipment shipment){
+        super(buyerId,productId);
         this.productCount = productCount;
         this.shipment = shipment;
     }
 
     @Override
-    public double getTotalPay(Product product)
-    {
-        return (product.price - (product.price * product.discount)/100);
+    public double getTotalPay(Product product){
+        return (product.price - ((product.price * product.discount)/100));
     }
 
-    public static class Record
-    {
-        public Status status;
+    public static class Record{
         public final Date date;
         public String message;
+        public Status status;
 
-        public Record (Status status, String message)
-        {
-            this.date = java.util.Calendar.getInstance().getTime();
+        public Record(Status status, String message){
             this.status = status;
+            this.date = java.util.Calendar.getInstance().getTime();
             this.message = message;
         }
     }

@@ -291,7 +291,6 @@ public class Algorithm {
         return minimum;
     }
 
-
     public static <T extends Comparable<? super T>> T min(Iterable<T> iterable, Comparator<? super T> comparator) {
         final Iterator <T> each  = iterable.iterator();
         T minimum = null;

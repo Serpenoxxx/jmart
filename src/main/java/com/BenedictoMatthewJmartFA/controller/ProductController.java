@@ -5,8 +5,6 @@ import com.BenedictoMatthewJmartFA.dbjson.JsonAutowired;
 import com.BenedictoMatthewJmartFA.dbjson.JsonTable;
 
 import org.springframework.web.bind.annotation.*;
-
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +63,10 @@ public class ProductController implements BasicGetController<Product>{
     }
 
     @GetMapping("/{id}/store")
-    public List<Product> getProductByStore(int id, int page, int pageSize){
+    public List<Product> getProductByStore(
+                        @PathVariable int id,
+                        @RequestParam int page,
+                        @RequestParam int pageSize){
         return Algorithm.paginate(productTable, page, pageSize, pred->pred.accountId == id);
     }
 
@@ -86,7 +87,7 @@ public class ProductController implements BasicGetController<Product>{
 
     @GetMapping("/getFiltered")
     public List<Product> getProductFiltered(@RequestParam(defaultValue="1") int page,
-                                            @RequestParam(defaultValue="5") int pageSize,
+                                            @RequestParam(defaultValue="10") int pageSize,
                                             @RequestParam int accountId,
                                             @RequestParam String search,
                                             @RequestParam int minPrice,
@@ -95,11 +96,24 @@ public class ProductController implements BasicGetController<Product>{
                                             @RequestParam boolean conditionUsed) {
         List<Product> filtered = new ArrayList<>();
 
-        for(Product item : productTable){
-            if(item.name.contains(search) && item.price <= maxPrice && item.price >= minPrice && item.category == category && item.conditionUsed == conditionUsed){
-                filtered.add(item);
+        for (Product product : getJsonTable()) {
+            if(product.conditionUsed == conditionUsed){
+                if(product.category == category){
+                    if((product.name.toUpperCase()).contains(search.toUpperCase())){
+
+                        if(maxPrice == 0.0 && minPrice != 0.0){
+                            if(product.price >= minPrice){
+                                System.out.println(product);
+                                filtered.add(product);
+                            }
+                        } else if(product.price >= minPrice && product.price <= maxPrice){
+                            System.out.println(product);
+                            filtered.add(product);
+                        }
+                    }
+                }
             }
         }
-        return Algorithm.<Product>paginate(filtered,page, pageSize, e -> {return true;});
+        return filtered;
     }
 }

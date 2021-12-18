@@ -5,9 +5,12 @@ import com.BenedictoMatthewJmartFA.dbjson.JsonAutowired;
 import com.BenedictoMatthewJmartFA.dbjson.JsonTable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Controls all requests related to payment with RestController
- * implements BasicGetController
+ * Implements BasicGetController
  *
  * @author Benedicto Matthew W
  */
@@ -37,7 +40,7 @@ public class PaymentController implements BasicGetController<Payment> {
      * Accepts the payment of a certain item if status is WAITING_CONFIRMATION.
      * Changes status to ON_PROGRESS if accepted.
      *
-     * @param  id  checks the item id.
+     * @param  id checks the item id.
      * @return  boolean representing status of item.
      */
 
@@ -56,7 +59,7 @@ public class PaymentController implements BasicGetController<Payment> {
      * Cancels the payment of a certain item if status is WAITING_CONFIRMATION.
      * Changes status to CANCELLED if canceled.
      *
-     * @param  id  checks the item id.
+     * @param  id checks the item id.
      * @return  boolean representing status of item.
      */
 
@@ -81,18 +84,17 @@ public class PaymentController implements BasicGetController<Payment> {
     ) {
         Account account = Algorithm.<Account>find(AccountController.accountTable, (e) -> e.id == buyerId);
         Product product = Algorithm.<Product>find(ProductController.productTable, (e) -> e.id == productId);
-
         if ((account != null) && (product != null)) {
             Payment payment = new Payment(buyerId, productId, productCount, null);
             double totalPriceToPay = payment.getTotalPay(product);
 
             if (account.balance >= totalPriceToPay ) {
                 Shipment shipmentDetail = new Shipment(shipmentAddress, 0, shipmentPlan, null);
-                account.balance -= totalPriceToPay;
+                account.balance -= totalPriceToPay * productCount;
                 payment = new Payment(buyerId, productId, productCount, shipmentDetail);
                 payment.history.add(new Payment.Record(Invoice.Status.WAITING_CONFIRMATION, "Awaiting Confirmation"));
                 paymentTable.add(payment);
-                //poolThread.add(payment);
+//                poolThread.add(payment);
                 return payment;
             }
         }
@@ -111,6 +113,24 @@ public class PaymentController implements BasicGetController<Payment> {
             }
         }
         return false;
+    }
+
+    @GetMapping("/{id}/getPayment")
+    public List<Payment> getPayment(@PathVariable int id){
+        List<Payment> filtered = new ArrayList<>();
+        JsonTable<Product> product = ProductController.productTable;
+        int tempId = 0;
+        for(Product prod: product){
+            if(prod.accountId == id){
+                tempId = prod.id;
+                for(Payment payment:getJsonTable()){
+                    if(payment.productId == tempId){
+                        filtered.add(payment);
+                    }
+                }
+            }
+        }
+        return filtered;
     }
 
     private static boolean timekeeper(Payment payment) {

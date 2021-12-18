@@ -18,35 +18,49 @@ public class ObjectPoolThread<T> extends Thread {
     public ObjectPoolThread(String name, Function<T, Boolean> routine) {
         super(name);
         this.routine = routine;
+        this.objectPool = new Vector<T>();
     }
 
     public ObjectPoolThread(Function<T, Boolean> routine) {
         super();
         this.routine = routine;
+        this.objectPool = new Vector<T>();
     }
 
     public synchronized void add(T object) {
-        objectPool.add(object);
+        this.objectPool.add(object);
     }
 
     public synchronized void exit() {
-        exitSignal = true;
-        interrupt();
+        this.exitSignal = true;
     }
 
     public void run() {
-        while (!Thread.interrupted() && !exitSignal) {
-            if (objectPool.isEmpty()) {
-                try {
-                    Thread.class.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                for (T object : objectPool) {
-                    if (routine.apply(object)) {
-                        objectPool.remove(object);
+
+        while (!exitSignal) {
+            for (T object : objectPool) {
+                while (!routine.apply(object)) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
+                }
+
+                if (routine.apply(object)) {
+                    objectPool.remove(object);
+                }
+
+                while (size() == 0) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (size() != 0) {
+                    notify();
                 }
             }
         }

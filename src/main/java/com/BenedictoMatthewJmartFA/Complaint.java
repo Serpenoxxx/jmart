@@ -1,4 +1,6 @@
 package com.BenedictoMatthewJmartFA;
+import com.BenedictoMatthewJmartFA.dbjson.Serializable;
+
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -8,21 +10,22 @@ import java.text.SimpleDateFormat;
  * @author Benedicto Matthew W
  */
 
-public class Complaint
+public class Complaint extends Serializable
 {
-    public String desc;
     public Date date;
+    public String desc;
 
     public Complaint(int id, String desc)
     {
+
         this.desc = desc;
         this.date = new Date();
     }
-    
-    public String toString() {
+
+
+    public String toString(){
         String format = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return "Complaint{date=" + sdf.format(this.date) + ",desc=" + "'" + this.desc + "'" + "}";
+        SimpleDateFormat format1 = new SimpleDateFormat(format);
+        return "Complaint{date=" + format1.format(this.date) + ",desc=" + "'" + this.desc + "'" + "}";
     }
-    
 }
