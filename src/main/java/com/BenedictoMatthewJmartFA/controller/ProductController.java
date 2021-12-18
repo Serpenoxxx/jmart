@@ -62,6 +62,14 @@ public class ProductController implements BasicGetController<Product>{
         return null;
     }
 
+    /** Gets the products based on store
+     *
+     * @param  id represents the account id
+     * @param  page represents the current page
+     * @param  pageSize represents the number of items shown in a single page
+     * @return  filtered page by paginate algorithm
+     */
+
     @GetMapping("/{id}/store")
     public List<Product> getProductByStore(
                         @PathVariable int id,

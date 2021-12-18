@@ -35,6 +35,11 @@ public class ObjectPoolThread<T> extends Thread {
         this.exitSignal = true;
     }
 
+    /** Runs the thread
+     *
+     * @exception  InterruptedException
+     */
+
     public void run() {
 
         while (!exitSignal) {

@@ -74,6 +74,17 @@ public class PaymentController implements BasicGetController<Payment> {
         return false;
     }
 
+    /** Creates the request of a payment.
+     * Will deduct the account balance based on final price.
+     *
+     * @param  buyerId represents the id of purchaser
+     * @param  productId represents the id of purchased item
+     * @param  productCount represents the quantity of purchased items
+     * @param  shipmentAddress represents the shipment address
+     * @param  shipmentPlan represents the used shipment plan
+     * @return  payment class
+     */
+
     @PostMapping("/create")
     public Payment create(
             @RequestParam int buyerId,
@@ -100,6 +111,13 @@ public class PaymentController implements BasicGetController<Payment> {
         }
         return null;
     }
+
+    /** Changes the status to ON_DELIVERY
+     *
+     * @param  id represents the id
+     * @param  receipt represents the receipt of purchased item
+     * @return  boolean
+     */
 
     @PostMapping("/{id}/submit")
     public boolean submit(@PathVariable int id, @RequestParam String receipt) {
@@ -132,6 +150,12 @@ public class PaymentController implements BasicGetController<Payment> {
         }
         return filtered;
     }
+
+    /** Changes invoice status based on time elapsed
+     *
+     * @param payment  represents the ongoing payment
+     * @return  boolean
+     */
 
     private static boolean timekeeper(Payment payment) {
         long startTime = System.currentTimeMillis();

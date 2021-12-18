@@ -25,57 +25,32 @@ public class Jmart {
         SpringApplication.run(Jmart.class, args);
         JsonDBEngine.Run(Jmart.class);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> JsonDBEngine.join()));
-//        try
-//        {
-//            JsonTable<Payment> table = new JsonTable<>(Payment.class,".scr/main/java/com/paymentTable.json");
-//            ObjectPoolThread<Payment> paymentPool = new ObjectPoolThread<Payment>("Thread-PP",Jmart::timekeeper);
-//            paymentPool.start();
-//            table.forEach(payment->paymentPool.add(payment));
-//            while (paymentPool.size() != 0);
-//            paymentPool.exit();
-//            while(paymentPool.isAlive());
-//            System.out.println("Thread exited successfully.");
-//            Gson gson =new Gson();
-//            table.forEach(payment->
-//            {
-//                String history = gson.toJson(payment.history);
-//                System.out.println(history);
-//            });
-//        }
-//        catch (Throwable t)
-//        {
-//            t.printStackTrace();
-//        }
     }
 
-    public static boolean timekeeper (Payment payment)
-    {
-        long t_started = System.currentTimeMillis();
+    /** Changes invoice status based on time elapsed
+     *
+     * @param payment  represents the ongoing payment
+     * @return  boolean
+     */
 
-        Payment.Record record = payment.history.get(payment.history.size()-1);
+    public static boolean timekeeper(Payment payment) {
+        long startTime = System.currentTimeMillis();
 
-        long t_elapsed =System.currentTimeMillis() - t_started;
-        if (record.status == Invoice.Status.WAITING_CONFIRMATION && t_elapsed > WAITING_CONF_LIMIT_MS)
-        {
-            payment.history.add(new Payment.Record(Invoice.Status.FAILED, "gagal"));
+        Payment.Record record = payment.history.get(payment.history.size() - 1);
+        long time_elapsed = System.currentTimeMillis() - startTime;
+        if (record.status == Invoice.Status.WAITING_CONFIRMATION && time_elapsed > WAITING_CONF_LIMIT_MS) {
+            payment.history.add(new Payment.Record(Invoice.Status.FAILED, "Failed"));
+        } else if (record.status == Invoice.Status.ON_PROGRESS && time_elapsed > ON_PROGRESS_LIMIT_MS) {
+            payment.history.add(new Payment.Record(Invoice.Status.FAILED, "Failed"));
+        } else if (record.status == Invoice.Status.ON_DELIVERY && time_elapsed > ON_DELIVERY_LIMIT_MS) {
+            payment.history.add(new Payment.Record(Invoice.Status.DELIVERED, "Success"));
+        } else if (record.status == Invoice.Status.DELIVERED && time_elapsed > DELIVERED_LIMIT_MS) {
+            payment.history.add(new Payment.Record(Invoice.Status.FINISHED, "Success"));
         }
-        else if (record.status == Invoice.Status.ON_PROGRESS && t_elapsed > ON_PROGRESS_LIMIT_MS)
-        {
-            payment.history.add(new Payment.Record(Invoice.Status.FAILED, "gagal"));
-        }
-        else if (record.status == Invoice.Status.ON_DELIVERY && t_elapsed > ON_DELIVERY_LIMIT_MS)
-        {
-            payment.history.add(new Payment.Record(Invoice.Status.DELIVERED, "terkirim"));
-        }
-        else if (record.status == Invoice.Status.DELIVERED && t_elapsed > DELIVERED_LIMIT_MS)
-        {
-            payment.history.add(new Payment.Record(Invoice.Status.FINISHED, "selesai"));
+        if (record.status == Invoice.Status.FAILED && record.status == Invoice.Status.FINISHED) {
             return true;
         }
-
-
         return false;
-
     }
 
 

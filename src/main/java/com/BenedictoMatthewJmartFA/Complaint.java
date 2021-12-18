@@ -22,7 +22,6 @@ public class Complaint extends Serializable
         this.date = new Date();
     }
 
-
     public String toString(){
         String format = "dd/MM/yyyy";
         SimpleDateFormat format1 = new SimpleDateFormat(format);

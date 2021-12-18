@@ -16,7 +16,14 @@ public class Treasury
     public static double getAdjustedPrice(double price, double discount){
         return (getDiscountedPrice(price, discount) + getAdminFee(price, discount));
     }
-    
+
+    /** Gets admin fee based on product, discount and commission multiplier
+     *
+     * @param  price represents the price of the product
+     * @param  discount represents the discount applied to the product
+     * @return  admin fee
+     */
+
     public static double getAdminFee(double price, double discount){
         if (price < BOTTOM_PRICE) {
             return BOTTOM_FEE;
@@ -24,7 +31,14 @@ public class Treasury
         
         return (getDiscountedPrice(price, discount) * COMMISSION_MULTIPLIER);
     }
-    
+
+    /**Gets product's discounted price
+     *
+     * @param  price represents the price of the product
+     * @param  discount represents the discount applied to the product
+     * @return  discounted price
+     */
+
     private static double getDiscountedPrice(double price, double discount){
 
         if (discount >= 100.0) {

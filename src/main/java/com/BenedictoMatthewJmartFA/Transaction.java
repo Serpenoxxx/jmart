@@ -1,5 +1,11 @@
 package com.BenedictoMatthewJmartFA;
 
+/**
+ * Contains transaction details.
+ *
+ * @author Benedicto Matthew W
+ */
+
 public abstract class Transaction
 {
     public String time;

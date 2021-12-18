@@ -21,6 +21,12 @@ public class Payment extends Invoice
         this.shipment = shipment;
     }
 
+    /** Gets the final payment amount
+     *
+     * @param  product represents product details
+     * @return  final amount needed to be paid
+     */
+
     @Override
     public double getTotalPay(Product product){
         return (product.price - ((product.price * product.discount)/100));

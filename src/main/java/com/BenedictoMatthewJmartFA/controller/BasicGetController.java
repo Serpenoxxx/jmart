@@ -22,6 +22,12 @@ import java.util.List;
 @RestController
 public interface BasicGetController <T extends Serializable>{
 
+    /** Gets an object from the Json Table matching the id
+     *
+     * @param  id represents the searched id
+     * @return  the object matching the id
+     */
+
     @GetMapping("/{id}")
     public default T getById(@PathVariable int id){
     for (T obj : getJsonTable()){
@@ -33,6 +39,13 @@ public interface BasicGetController <T extends Serializable>{
     }
 
     public abstract JsonTable<T> getJsonTable();
+
+    /** Gets the paginated page.
+     *
+     * @param  page represents the designated page
+     * @param  pageSize represents the number of items inside the page
+     * @return  paginated page by paginate algorithm
+     */
 
     @GetMapping("/page")
     public default List<T> getPage(@RequestParam int page, @RequestParam int pageSize){

@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
  *
  * @author Benedicto Matthew W
  */
+
 @RestController
 @RequestMapping("/phoneTopUp")
 public class PhoneTopUpController implements BasicGetController<PhoneTopUp> {
@@ -28,6 +29,14 @@ public class PhoneTopUpController implements BasicGetController<PhoneTopUp> {
     public JsonTable<PhoneTopUp> getJsonTable(){
         return phoneTopUpTable;
     }
+
+    /** Tops up buyer phone balance
+     *
+     * @param  buyerId represents buyer id
+     * @param  productId represents product id
+     * @param  phoneNumber represents phone number
+     * @return newPhoneTopUp which includes updated phone balance
+     */
 
     @PostMapping(value="/topUpbyPhone")
     public PhoneTopUp phoneTopUp(@RequestParam int buyerId,
@@ -49,5 +58,4 @@ public class PhoneTopUpController implements BasicGetController<PhoneTopUp> {
         phoneTopUpTable.add(newPhoneTopUp);
         return newPhoneTopUp;
     }
-
 }

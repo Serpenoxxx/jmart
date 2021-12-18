@@ -32,7 +32,12 @@ public class Store{
     public String toString() {
         return "Name: " + this.name + "\n" + "address: " + this.address+ "\n" + "phoneNumber: " + this.phoneNumber;
     }
-    
+
+    /** Validates the credentials
+     *
+     * @return  boolean whether the credentials match or not
+     */
+
     public boolean Validate(){
         Pattern pattern = Pattern.compile(REGEX_NAME);
         Pattern pattern2 = Pattern.compile(REGEX_PHONE);
